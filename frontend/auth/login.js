@@ -1,6 +1,7 @@
 const textSwitcherBtn = document.getElementById("text-switcher-btn");
 const heading = document.querySelector("h2");
 const loginBtn = document.getElementById("loginBtn");
+
 const usernameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -35,3 +36,58 @@ loginBtn.addEventListener("click", function () {
     login();
   }
 });
+
+async function register() {
+  try {
+    if (!usernameInput.value || !emailInput.value || !passwordInput.value) {
+      alert("All fields are required!");
+      return;
+    }
+
+    const response = await fetch("http://localhost:3002/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: usernameInput.value,
+        email: emailInput.value,
+        password: passwordInput.value,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      usernameInput.value = "";
+      passwordInput.value = "";
+      emailInput.value = "";
+
+      alert(data.message);
+    }
+  } catch (err) {}
+}
+
+async function login() {
+  try {
+    if (!emailInput.value || !passwordInput.value) {
+      alert("All fields are required!");
+      return;
+    }
+
+    const response = await fetch("http://localhost:3002/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailInput.value,
+        password: passwordInput.value,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      passwordInput.value = "";
+      emailInput.value = "";
+      alert(data.message);
+    }
+  } catch (err) {
+    alert(err.message);
+  }
+}
