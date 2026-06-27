@@ -13,5 +13,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/products" , productRoute)
+app.use("/api/product" , productRoute)
 
 export default app;
